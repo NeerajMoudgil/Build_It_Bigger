@@ -4,7 +4,7 @@ package com.udacity.gradle.builditbigger;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.util.Pair;
-import android.widget.Toast;
+import android.util.Log;
 
 import com.example.myapplication.jokebackend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -16,8 +16,22 @@ import java.io.IOException;
 
 
    public class EndPointAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+
+
         private static MyApi myApiService = null;
         private Context context;
+
+       private static onResponseListener onResponseListener;
+
+       public EndPointAsyncTask(Context context) {
+           this.context = context;
+           onResponseListener=(onResponseListener )context;
+       }
+
+       public interface onResponseListener
+       {
+           void onResponse(String response);
+       }
 
         @Override
         protected String doInBackground(Pair<Context, String>... params) {
@@ -39,11 +53,8 @@ import java.io.IOException;
                 myApiService = builder.build();
             }
 
-            context = params[0].first;
-            String name = params[0].second;
-
             try {
-                return myApiService.sayHi(name).execute().getData();
+                return myApiService.sayJoke().execute().getData();
             } catch (IOException e) {
                 return e.getMessage();
             }
@@ -51,7 +62,8 @@ import java.io.IOException;
 
         @Override
         protected void onPostExecute(String result) {
-            Toast.makeText(context, result, Toast.LENGTH_LONG).show();
+            Log.i("hherere",result);
+            onResponseListener.onResponse(result);
         }
     }
 
