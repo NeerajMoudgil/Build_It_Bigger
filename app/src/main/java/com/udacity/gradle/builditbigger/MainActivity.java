@@ -7,7 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.example.Joke;
 import com.example.android.jokeandroidlibrary.JokeActivity;
@@ -52,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
         new EndPointAsyncTask(this,progressBar).execute();
     }
     public void displayJoke(View view) {
-       // Toast.makeText(this, Joke.getJoke(), Toast.LENGTH_SHORT).show();
        Intent intent = new Intent(this, JokeActivity.class);
         intent.putExtra(JokeActivity.JOKEINTENT, Joke.getJoke());
         startActivity(intent);
@@ -61,7 +59,9 @@ public class MainActivity extends AppCompatActivity implements EndPointAsyncTask
 
     @Override
     public void onResponse(String response) {
-        Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(this, JokeActivity.class);
+        intent.putExtra(JokeActivity.JOKEINTENT, response);
+        startActivity(intent);
 
     }
 }
