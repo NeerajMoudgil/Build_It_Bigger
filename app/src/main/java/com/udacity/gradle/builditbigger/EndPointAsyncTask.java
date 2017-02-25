@@ -32,6 +32,11 @@ import java.io.IOException;
            onResponseListener=(onResponseListener )context;
        }
 
+       public  EndPointAsyncTask()
+       {
+
+       }
+
        @Override
        protected void onPreExecute() {
            super.onPreExecute();
@@ -80,7 +85,9 @@ import java.io.IOException;
             {
                 mprogressBar.setVisibility(View.GONE);
             }
-            onResponseListener.onResponse(result);
+            if(onResponseListener!= null) {
+                onResponseListener.onResponse(result);
+            }
         }
     }
 
