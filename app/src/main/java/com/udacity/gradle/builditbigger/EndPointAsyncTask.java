@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v4.util.Pair;
 import android.util.Log;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import com.example.myapplication.jokebackend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -20,12 +22,23 @@ import java.io.IOException;
 
         private static MyApi myApiService = null;
         private Context context;
+        private ProgressBar mprogressBar;
 
        private static onResponseListener onResponseListener;
 
-       public EndPointAsyncTask(Context context) {
+       public EndPointAsyncTask(Context context, ProgressBar progressBar) {
            this.context = context;
+           this.mprogressBar=progressBar;
            onResponseListener=(onResponseListener )context;
+       }
+
+       @Override
+       protected void onPreExecute() {
+           super.onPreExecute();
+           if(mprogressBar!=null)
+           {
+               mprogressBar.setVisibility(View.VISIBLE);
+           }
        }
 
        public interface onResponseListener
@@ -63,6 +76,10 @@ import java.io.IOException;
         @Override
         protected void onPostExecute(String result) {
             Log.i("hherere",result);
+            if(mprogressBar!=null)
+            {
+                mprogressBar.setVisibility(View.GONE);
+            }
             onResponseListener.onResponse(result);
         }
     }
